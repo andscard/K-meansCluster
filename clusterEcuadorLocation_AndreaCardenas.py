@@ -7,14 +7,14 @@ file_path = 'data_ecu.txt'
 data = pd.read_csv(file_path, delim_whitespace=True, header=None, names=["Longitude", "Latitude"])
 
 # Data cleaning
-data = data.replace('error', np.nan)
-data = data.dropna()
-data = data.replace('999.0', np.nan)
+data = data.replace({'error': 0, 999.0: 0})
 
 data['Longitude'] = pd.to_numeric(data['Longitude'], errors='coerce')
 data['Latitude'] = pd.to_numeric(data['Latitude'].str.replace(',', '.'), errors='coerce')
 
-data = data.fillna(0)
+data['Longitude'] = data['Longitude'].fillna(0)
+data['Latitude'] = data['Latitude'].fillna(0)
+
 coordinates = data[['Longitude', 'Latitude']].values
 
 # Aplicarcion de  K-means clustering
